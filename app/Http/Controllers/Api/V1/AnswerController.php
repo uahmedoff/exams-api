@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Answer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AnswerRequest;
 use App\Http\Resources\AnswerResource;
 
 class AnswerController extends Controller
@@ -24,7 +25,7 @@ class AnswerController extends Controller
         return AnswerResource::collection($answers);    
     }
 
-    public function store(Request $request){
+    public function store(AnswerRequest $request){
         if(auth()->user()->role == User::ROLE_ADMIN){
             $answer = $this->answer->create([
                 'answer' => $request->answer,

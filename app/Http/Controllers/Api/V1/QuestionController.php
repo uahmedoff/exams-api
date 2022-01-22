@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\User;
 use App\Models\Question;
+use App\Models\QuestionPlan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\QuestionRequest;
@@ -32,8 +33,14 @@ class QuestionController extends Controller
                 'question' => $request->question,
                 'level_id' => $request->level_id,
                 'resource_id' => $request->resource_id,
-                'type' => $request->type,
+                'type_id' => $request->type_id,
             ]);
+            if($request->has('qp_id')){
+                QuestionPlan::find($request->qp_id)
+                    ->update([
+                        'question_id' => $question->id
+                    ]);
+            }
             return new QuestionResource($question);
         }        
         return response()->json(['message'=>'You have no permission'],403);
@@ -57,8 +64,8 @@ class QuestionController extends Controller
             if($request->has('resource_id')){
                 $question->resource_id = $request->resource_id; 
             }
-            if($request->has('type')){
-                $question->type = $request->type; 
+            if($request->has('type_id')){
+                $question->type_id = $request->type_id; 
             }
     
             $question->save();

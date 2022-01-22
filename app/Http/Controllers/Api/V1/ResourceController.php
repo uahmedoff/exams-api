@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ResourceRequest;
 use App\Http\Resources\ResourceResource;
 use App\Models\Level;
+use App\Models\QuestionPlan;
 
 class ResourceController extends Controller
 {
@@ -29,16 +30,22 @@ class ResourceController extends Controller
 
     public function store(ResourceRequest $request){
         if(auth()->user()->role == User::ROLE_ADMIN){
-            $fileName = ($request->src && $request->type) ? File::uploadFromBase64($request->src,[
+            $fileName = ($request->src && $request->type_id) ? File::uploadFromBase64($request->src,[
                 'folder1'=>$request->level_id,
-                'folder2'=>$request->type
+                'folder2'=>$request->type_id
             ]) : null;
             $resource = $this->resource->create([
                 'src' => $fileName,
-                'type' => $request->type,
+                'type_id' => $request->type_id,
                 'text' => $request->text,
                 'level_id' => $request->level_id
             ]);
+            if($request->has('qp_id')){
+                QuestionPlan::find($request->qp_id)
+                    ->update([
+                        'resource_id' => $resource->id
+                    ]);
+            }
             return new ResourceResource($resource);
         }
         return response()->json(['message'=>'You have no permission'],403);
@@ -54,14 +61,14 @@ class ResourceController extends Controller
             $resource = $this->resource->findOrFail($id);
             $fileName = ($request->has('src')) ? File::uploadFromBase64($request->src,[
                 'folder1' => ($request->has('level_id')) ? $request->level_id : $resource->level_id,
-                'folder2' => ($request->has('type')) ? $request->type : $resource->type
+                'folder2' => ($request->has('type_id')) ? $request->type_id : $resource->type_id
             ]) : $resource->src;
             
             if($request->has('src')){
                 $resource->src = $fileName; 
             }
-            if($request->has('type')){
-                $resource->type = $request->type; 
+            if($request->has('type_id')){
+                $resource->type_id = $request->type_id; 
             }
             if($request->has('text')){
                 $resource->text = $request->text; 
@@ -70,7 +77,7 @@ class ResourceController extends Controller
                 $resource->level_id = $request->level_id; 
             }
             $resource->save();
-     
+
             return new ResourceResource($resource);
         }
         return response()->json(['message'=>'You have no permission'],403);

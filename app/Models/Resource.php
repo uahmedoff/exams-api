@@ -11,14 +11,9 @@ class Resource extends Model
 {
     use HasFactory, ScopeTrait, Userstamps;
 
-    const TYPE_VIDEO = 1;
-    const TYPE_AUDIO = 2;
-    const TYPE_IMAGE = 3;
-    const TYPE_TEXT = 4;
-
     protected $fillable = [
         'src',
-        'type',
+        'type_id',
         'text',
         'level_id',
         'is_active'
@@ -30,7 +25,7 @@ class Resource extends Model
 
     public function scopeFilter($query){
         if ($filter = request('type')){
-            $query = $query->where('type',$filter);
+            $query = $query->where('type_id',$filter);
         }
         if ($filter = request('level_id')){
             $query = $query->where('level_id',$filter);
@@ -39,6 +34,10 @@ class Resource extends Model
             $query = $query->where('is_active', $filter);
         }
         return $query;
+    }
+
+    public function type(){
+        return $this->belongsTo(ResourceType::class,'type_id','id');
     }
 
     public function level(){

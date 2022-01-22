@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class QuestionRequest extends FormRequest
+class ResourceTypeRequest extends FormRequest
 {
     public function authorize()
     {
@@ -14,9 +14,7 @@ class QuestionRequest extends FormRequest
     public function rules()
     {
         return [
-            'question' => 'required',
-            'level_id' => 'required',
-            'type_id' => 'required'
+            'name' => 'required'
         ];
     }
 }

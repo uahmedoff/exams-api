@@ -13,7 +13,7 @@ class QuestionResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'question' => $this->question,
-            'type' => $this->type,
+            'type_id' => $this->type_id,
             'is_active' => $this->is_active,
             'level_id' => $this->level_id,
             'resource_id' => $this->resource_id,

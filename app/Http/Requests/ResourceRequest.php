@@ -14,7 +14,7 @@ class ResourceRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|integer',
+            'type_id' => 'required|integer',
             'level_id' => 'required|integer'
         ];
     }

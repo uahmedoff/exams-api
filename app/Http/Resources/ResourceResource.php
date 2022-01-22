@@ -13,7 +13,7 @@ class ResourceResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'src' => $this->src,
-            'type' => $this->type,
+            'type_id' => $this->type_id,
             'text' => $this->text,
             'is_active' => $this->is_active,
             'level_id' => $this->level_id,

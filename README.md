@@ -6,7 +6,7 @@
     https://github.com/uahmedoff/exams-api.git
 
  ##### Go to the folder application using cd command on your cmd or terminal
-    cd exans-api
+    cd exams-api
  
  ##### Run your cmd or terminal
     composer install
@@ -30,9 +30,6 @@
 
  ##### Symlink to public folder
     php artisan storage:link
-
-##### Database seeder run
-    php artisan db:seed   
  
 
 

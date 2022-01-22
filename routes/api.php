@@ -32,5 +32,8 @@ Route::group(['prefix'=>'v1','namespace' => '\App\Http\Controllers\Api\V1'],func
         });
         Route::apiResource('question','QuestionController');
         Route::apiResource('answer','AnswerController');
+        Route::apiResource('question-plan','QuestionPlanController');
+        Route::apiResource('resource-type','ResourceTypeController');
+        Route::apiResource('question-type','QuestionTypeController');
     });
 });

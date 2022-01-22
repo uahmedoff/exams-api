@@ -12,17 +12,10 @@ class Question extends Model
 {
     use HasFactory, ScopeTrait, Userstamps;
 
-    const TYPE_LISTENING = 1;
-    const TYPE_READING = 2;
-    const TYPE_GRAMMAR = 3;
-    const TYPE_VOCABULARY = 4;
-    const TYPE_SPEAKING = 5;
-    const TYPE_WRITING = 6;
-
     protected $fillable = [
         'question',
         'level_id',
-        'type',
+        'type_id',
         'resource_id',
         'is_active'
     ];
@@ -30,7 +23,7 @@ class Question extends Model
     private $search_columns = [
         'question'
     ];
-
+    
     public function scopeFilter($query){
         if ($filter = request('without_resource')){
             $query = $query->whereNull('resource_id');
@@ -44,7 +37,7 @@ class Question extends Model
             });
         }
         if ($filter = request('type')){
-            $query = $query->where('type', $filter);
+            $query = $query->where('type_id', $filter);
         }
         if ($filter = request('is_active')){
             $query = $query->where('is_active', $filter);
@@ -54,6 +47,10 @@ class Question extends Model
 
     public function scopeWithoutResource($query){
         return $query->whereNull('resource_id');
+    }
+
+    public function type(){
+        return $this->belongsTo(QuestionType::class,'type_id','id');
     }
 
     public function level(){

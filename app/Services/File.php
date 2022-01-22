@@ -2,7 +2,7 @@
 namespace App\Services;
 
 use App\Models\Level;
-use App\Models\Resource;
+use App\Models\ResourceType;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,24 +39,10 @@ class File{
                 $folder1 = str_replace(" ","_",$level->name);
             }
 
-            $folder2 = "";            
             if(isset($folders['folder2'])){
                 $file_type = $folders['folder2'];
-                switch($file_type){
-                    case Resource::TYPE_VIDEO:
-                        $folder2 = 'videos';
-                        break;
-                    case Resource::TYPE_AUDIO:
-                        $folder2 = 'audios';
-                        break;
-                    case Resource::TYPE_IMAGE:
-                        $folder2 = 'images';
-                        break;
-                    case Resource::TYPE_TEXT:{
-                            abort(403,"Incorrect type chosen");
-                        }
-                        break;
-                }
+                $resource = ResourceType::find($file_type);
+                $folder2 = $resource->name."s";            
                 if(
                     ($folder2 == 'videos' && $extension != 'mp4') || 
                     ($folder2 == 'audios' && $extension != 'mp3') || 
