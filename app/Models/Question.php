@@ -67,22 +67,17 @@ class Question extends Model
 
     public function numberOfQuestions(){
         $query = 'SELECT "l"."name" as level,
-            CASE 
-                WHEN "q"."type"=1  THEN \'Listening\'
-                WHEN "q"."type"=2  THEN \'Reading\'
-                WHEN "q"."type"=3  THEN \'Grammar\'
-                WHEN "q"."type"=4  THEN \'Vocabulary\'
-                WHEN "q"."type"=5  THEN \'Speaking\'
-                WHEN "q"."type"=6  THEN \'Writing\'
-            END as "question_type",
+            qt.name as "question_type",
             COUNT(q.id) as number_of_questions
             FROM cb_exams_questions q
             LEFT JOIN cb_exams_levels l 
                 ON q.level_id = l.id
+            LEFT JOIN cb_exams_question_types qt 
+                ON qt.id = q.type_id
             WHERE 
                 q.is_active = true    
-            GROUP BY "q"."type", q.level_id,"l"."name"
-            ORDER BY q.level_id, "q"."type"	ASC';
+            GROUP BY "q"."type_id", q.level_id,"l"."name",qt.name
+            ORDER BY q.level_id, "q"."type_id"	ASC';
         return DB::select($query);
     }
 }
