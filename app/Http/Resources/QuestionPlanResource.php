@@ -21,6 +21,7 @@ class QuestionPlanResource extends JsonResource
             'level_id' => $this->level_id,
             'question_type_id' => $this->question_type_id,
             'question' => new QuestionResource($this->question),
+            'is_active' => $this->is_active
         ];
     }
 }

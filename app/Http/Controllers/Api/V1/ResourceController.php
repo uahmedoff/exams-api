@@ -22,7 +22,7 @@ class ResourceController extends Controller
     }
 
     public function index(){
-        $resources = $this->resource->with('questions');
+        $resources = $this->resource->notDeleted()->with('questions');
         $resources = $resources->filter();
         $resources = $resources->sort()->paginate($this->per_page);
         return ResourceResource::collection($resources);    
@@ -88,6 +88,10 @@ class ResourceController extends Controller
             $resource = $this->resource->findOrFail($id);
             $resource->is_active = !$resource->is_active;
             $resource->save();
+            if(!$resource->is_active)
+                QuestionPlan::where('resource_id',$id)->update([
+                    'resource_id' => null
+                ]);
             return response()->json([],204);
         }
         return response()->json(['message'=>'You have no permission'],403);

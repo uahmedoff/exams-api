@@ -21,7 +21,7 @@ class QuestionController extends Controller
     }
 
     public function index(Request $request){
-        $questions = $this->question;
+        $questions = $this->question->notDeleted();
         $questions = $questions->filter();
         $questions = $questions->sort()->paginate($this->per_page);
         return QuestionResource::collection($questions);    
@@ -80,6 +80,10 @@ class QuestionController extends Controller
             $question = $this->question->findOrFail($id);
             $question->is_active = !$question->is_active;
             $question->save();
+            if(!$question->is_active)
+                QuestionPlan::where('question_id',$id)->update([
+                    'question_id' => null
+                ]);
             return response()->json([],204);
         }
         return response()->json(['message'=>'You have no permission'],403);

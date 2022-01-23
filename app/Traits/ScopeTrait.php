@@ -3,6 +3,10 @@ namespace App\Traits;
 
 trait ScopeTrait
 {
+    public function scopeNotDeleted($query){
+        return $query->where('is_active',true);
+    }
+    
     public function scopeSort($query){
         $column = (request()->get('column')) ?? 'id';
         $order = (request()->get('order')) ?? 'asc';

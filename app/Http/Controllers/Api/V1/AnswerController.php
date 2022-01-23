@@ -19,7 +19,7 @@ class AnswerController extends Controller
     }
 
     public function index(){
-        $answers = $this->answer;
+        $answers = $this->answer->notDeleted();
         $answers = $answers->filter();
         $answers = $answers->sort()->paginate($this->per_page);
         return AnswerResource::collection($answers);    
@@ -27,6 +27,10 @@ class AnswerController extends Controller
 
     public function store(AnswerRequest $request){
         if(auth()->user()->role == User::ROLE_ADMIN){
+            if($request->is_correct){
+                $this->answer->where('question_id',$request->question_id)
+                    ->update(['is_correct' => false]);
+            }
             $answer = $this->answer->create([
                 'answer' => $request->answer,
                 'question_id' => $request->question_id,

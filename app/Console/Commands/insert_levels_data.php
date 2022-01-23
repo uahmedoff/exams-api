@@ -45,10 +45,10 @@ class insert_levels_data extends Command
         ]);
 
         Level::create([
-            'name' => 'Upper-intermediate Mid'
+            'name' => 'Upper-Intermediate Mid'
         ]);
         Level::create([
-            'name' => 'Upper-intermediate Final'
+            'name' => 'Upper-Intermediate Final'
         ]);
     }
 }

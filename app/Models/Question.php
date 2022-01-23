@@ -12,10 +12,15 @@ class Question extends Model
 {
     use HasFactory, ScopeTrait, Userstamps;
 
+    const CATEGORY_EASY = 1;
+    const CATEGORY_MEDIUM = 2;
+    const CATEGORY_DIFFICULT = 3;
+
     protected $fillable = [
         'question',
         'level_id',
         'type_id',
+        'category_id',
         'resource_id',
         'is_active'
     ];
@@ -45,10 +50,6 @@ class Question extends Model
         return $query;
     }
 
-    public function scopeWithoutResource($query){
-        return $query->whereNull('resource_id');
-    }
-
     public function type(){
         return $this->belongsTo(QuestionType::class,'type_id','id');
     }
@@ -58,7 +59,8 @@ class Question extends Model
     }
 
     public function answers(){
-        return $this->hasMany(Answer::class);
+        return $this->hasMany(Answer::class)
+            ->where('is_active',true);
     }
 
     public function qresource(){

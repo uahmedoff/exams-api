@@ -16,6 +16,7 @@ class QuestionResource extends JsonResource
             'type_id' => $this->type_id,
             'is_active' => $this->is_active,
             'level_id' => $this->level_id,
+            'category_id' => $this->category_id,
             'resource_id' => $this->resource_id,
             'level' => new LevelResource($this->level),
             'created_by' => new UserResource($this->creator),

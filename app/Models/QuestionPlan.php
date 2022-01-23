@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ScopeTrait;
 
 class QuestionPlan extends Model
 {
-    use HasFactory;
+    use HasFactory, ScopeTrait;
 
     protected $table = 'question_plans';
 
@@ -16,7 +17,10 @@ class QuestionPlan extends Model
         'question_id',
         'level_id',
         'question_type_id',
+        'is_active'
     ];
+
+    private $search_columns = [];
 
     public function qresource(){
         return $this->belongsTo(Resource::class,'resource_id');
