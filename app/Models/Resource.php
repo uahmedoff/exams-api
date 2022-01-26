@@ -24,7 +24,7 @@ class Resource extends Model
     ];
 
     public function scopeFilter($query){
-        if ($filter = request('type')){
+        if ($filter = request('type_id')){
             $query = $query->where('type_id',$filter);
         }
         if ($filter = request('level_id')){

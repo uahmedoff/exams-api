@@ -35,6 +35,7 @@ class AnswerController extends Controller
                 'answer' => $request->answer,
                 'question_id' => $request->question_id,
                 'is_correct' => $request->is_correct,
+                'type_id' => $request->type_id
             ]);
             return new AnswerResource($answer);
         }        
@@ -58,6 +59,9 @@ class AnswerController extends Controller
             }
             if($request->has('is_correct')){
                 $answer->is_correct = $request->is_correct; 
+            }
+            if($request->has('type_id')){
+                $answer->type_id = $request->type_id; 
             }
     
             $answer->save();

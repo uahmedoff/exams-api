@@ -41,7 +41,7 @@ class Question extends Model
                 $q->where('id',$filter);
             });
         }
-        if ($filter = request('type')){
+        if ($filter = request('type_id')){
             $query = $query->where('type_id', $filter);
         }
         if ($filter = request('is_active')){

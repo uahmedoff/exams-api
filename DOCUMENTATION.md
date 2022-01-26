@@ -40,7 +40,7 @@ Get resources with questions
 
 Parameters:
 
-- type (optional, integer (Values: 1 - Video, 2 - Audio, 3 - Image, 4 - Text))
+- type_id (optional, integer (Values: 1 - Video, 2 - Audio, 3 - Image, 4 - Text))
 - level_id (optional, integer)
 - is_active (optional, boolean)
 - column (optional, sort for column, Values: "id", "created_at", "updated_at", "text", "level_id", "is_active")
@@ -52,7 +52,7 @@ Insert new resource
 
 Parameters:
 
-- type (required, integer (Values: 1 - Video, 2 - Audio, 3 - Image, 4 - Text))
+- type_id (required, integer (Values: 1 - Video, 2 - Audio, 3 - Image, 4 - Text))
 - level_id (required, integer)
 - src (optional, base64 encoded file, extension must be one of these: "mp4, mp3, jpg, png")
 - text (optional, text)
@@ -69,7 +69,7 @@ Edit resource
 
 Parameters:
 
-- type (optional, integer (Values: 1 - Video, 2 - Audio, 3 - Image, 4 - Text))
+- type_id (optional, integer (Values: 1 - Video, 2 - Audio, 3 - Image, 4 - Text))
 - level_id (optional, integer)
 - src (optional, base64 encoded file, extension must be one of these: "mp4, mp3, jpg, png")
 - text (optional, text)
@@ -89,7 +89,8 @@ Parameters:
 - without_resource (optional, true - boolean)
 - question (optional, text)
 - level_id (optional, integer)
-- type (optional, integer (Values: 1 - Listening, 2 - Reading, 3 - Grammar, 4 - Vocabulary, 5 - Speaking, 6 - Writing))
+- type_id (optional, integer)
+- category_id (optional, integer (Values: 1 - Easy, 2 - Medium, 3 - Difficult))
 - is_active (optional, boolean)
 - column (optional, sort for column, Values: "id", "created_at", "updated_at", "question", "level_id", "resource_id", "is_active")
 - order (optional, order by, Values: "asc", "desc")
@@ -102,7 +103,8 @@ Parameters:
 
 - question (required, text)
 - level_id (required, integer)
-- type (required, integer (Values: 1 - Listening, 2 - Reading, 3 - Grammar, 4 - Vocabulary, 5 - Speaking, 6 - Writing))
+- type_id (required, integer)
+- category_id (optional, integer (Values: 1 - Easy, 2 - Medium, 3 - Difficult))
 - resource_id (optional, integer)
 
 ### GET `/question/{question_id}`
@@ -119,7 +121,7 @@ Parameters:
 
 - question (optional, text)
 - level_id (optional, integer)
-- type (optional, integer (Values: 1 - Listening, 2 - Reading, 3 - Grammar, 4 - Vocabulary, 5 - Speaking, 6 - Writing))
+- type_id (optional, integer)
 - resource_id (optional, integer)
 
 ### DELETE `/question/{question_id}`
