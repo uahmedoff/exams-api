@@ -12,6 +12,7 @@ class Exam extends Model
     protected $fillable = [
         'student_id',
         'level_id',
+        'group'
     ];
 
     public function student(){

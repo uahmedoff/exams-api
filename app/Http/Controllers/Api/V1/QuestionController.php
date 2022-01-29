@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\QuestionRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\QuestionResource;
+use App\Http\Resources\QuestionWithResourceResource;
 
 class QuestionController extends Controller
 {
@@ -23,7 +24,15 @@ class QuestionController extends Controller
     public function index(Request $request){
         $questions = $this->question->notDeleted();
         $questions = $questions->filter();
-        $questions = $questions->sort()->paginate($this->per_page);
+        $questions = ($request->order == 'rand') ? $questions->inRandomOrder() : $questions->sort();
+        if($request->has('limit')){
+            $limit = $request->limit;
+            $questions = $questions->limit($limit)->with('qresource')->get();
+            return QuestionWithResourceResource::collection($questions);
+        }
+        else{
+            $questions = $questions->paginate($this->per_page);
+        }
         return QuestionResource::collection($questions);    
     }
 

@@ -25,33 +25,32 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
         try{
-            $client = new \GuzzleHttp\Client(['base_uri' => 'https://app.cambridgeonline.uz/api/']);
+            $client = new \GuzzleHttp\Client(['base_uri' => config('app.cb_url')."/api/"]);
             $res = $client->request('POST','auth/login', [
-            'headers' => [
-                'Referer' => 'https://app.cambridgeonline.uz',
-                "Accept" => 'Application/json'
-            ],
-            'form_params' => [
-                    'phone' =>  $request->phone,
-                    'password' => $request->password
-            ]]);
-            // return $res->getStatusCode(); // 200
+                    'headers' => [
+                        'Referer' => config('app.cb_url'),
+                        "Accept" => 'Application/json'
+                    ],
+                    'form_params' => [
+                        'phone' =>  $request->phone,
+                        'password' => $request->password
+                    ]
+                ]
+            );
             $body = json_decode($res->getBody()); // 200
             if($body->user->type == 'student'){
-                return response()->json(['error' => 'Unauthorized'], 401);
+                return response()->json(['error' => 'Unauthorized 1'], 401);
             }
         }
         catch (ClientException $e) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized 2'], 401);
         }
-
         $b = $body;
-
         try{
-            $client = new \GuzzleHttp\Client(['base_uri' => 'https://app.cambridgeonline.uz/api/']);
+            $client = new \GuzzleHttp\Client(['base_uri' => config('app.cb_url')."/api/"]);
             $res = $client->request('POST','auth/me', [
                 'headers' => [
-                    'Referer' => 'https://app.cambridgeonline.uz',
+                    'Referer' => config('app.cb_url'),
                     "Accept" => 'Application/json',
                     "Authorization" => 'bearer '.$b->access_token,
                 ],
@@ -66,12 +65,13 @@ class AuthController extends Controller
                 $r = User::ROLE_ADMIN;
             elseif($role == 'Invigilator'){
                 $r = User::ROLE_INVIGILATOR;
-            }    
+            }
+            elseif($role == 'Assesser'){
+                $r = User::ROLE_ASSESSER;
+            }   
         }
-        
         if(!$r)
             return response()->json(['error' => 'Unauthorized'], 401);
-
         $user = User::updateOrCreate(
             [
                 'phone' => $b->user->phone
@@ -82,9 +82,7 @@ class AuthController extends Controller
                 'role' => $r
             ]
         );
-
         $token = auth()->login($user);
-
         return (new UserResource($request->user()))->additional([
             'meta' => [
                 'token' => $token

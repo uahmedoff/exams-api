@@ -13,7 +13,7 @@ class Result extends Model
         'exam_id',
         'question_id',
         'answer_id',
-        'correct_answer_id',
+        'is_correct',
         'file',
         'answer',
         'score',

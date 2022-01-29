@@ -52,8 +52,10 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://localhost/'),
 
+    'cb_url' => env('CB_URL', 'http://cambridgeonline/'),
+    
     'asset_url' => env('ASSET_URL', null),
 
     /*
@@ -67,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => env('ASSET_URL', 'Asia/Tashkent'),
+    'timezone' => env('APP_TIMEZONE', 'Asia/Tashkent'),
 
     /*
     |--------------------------------------------------------------------------

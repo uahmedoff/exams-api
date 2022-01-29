@@ -30,13 +30,21 @@ Route::group(['prefix'=>'v1','namespace' => '\App\Http\Controllers\Api\V1'],func
         Route::group(['prefix' => 'question'],function(){
             Route::get('numbers','QuestionDetailsController@number_of_questions');
         });
+        // Route::group(['prefix' => 'question'],function(){
+        //     Route::get('numbers','QuestionPlanDetailsController@number_of_question_plans');
+        // });
         Route::apiResource('question','QuestionController');
         Route::apiResource('answer','AnswerController');
+        Route::apiResource('exam','ExamController');
+        Route::apiResource('result','ResultController');
         Route::group(['prefix' => 'question-plan'],function(){
             Route::get('numbers','QuestionPlanDetailsController@number_of_question_plans');
         });
         Route::apiResource('question-plan','QuestionPlanController');
         Route::apiResource('resource-type','ResourceTypeController');
         Route::apiResource('question-type','QuestionTypeController');
+        Route::group(['prefix' => 'student'],function(){
+            Route::get('phone/{phone}','StudentController@get_student_by_phone');
+        });
     });
 });

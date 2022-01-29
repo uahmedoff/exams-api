@@ -41,12 +41,18 @@ class Question extends Model
                 $q->where('id',$filter);
             });
         }
+        if ($filter = request('level')){
+            $query = $query->whereHas('level',function($q)use($filter){
+                $q->where('name',$filter);
+            });
+        }
         if ($filter = request('type_id')){
             $query = $query->where('type_id', $filter);
         }
         if ($filter = request('is_active')){
             $query = $query->where('is_active', $filter);
         }
+
         return $query;
     }
 
