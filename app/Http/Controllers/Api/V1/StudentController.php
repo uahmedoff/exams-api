@@ -43,8 +43,8 @@ class StudentController extends Controller{
                         'current_level' => $group_helper->getStudentExamLevel($group->level->name,$week_num)
                     ]
                 );
+                return $student;
             }
         }
-        return $student;
     }
 }
