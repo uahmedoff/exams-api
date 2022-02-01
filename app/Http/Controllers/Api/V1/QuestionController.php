@@ -41,6 +41,7 @@ class QuestionController extends Controller
             $question = $this->question->create([
                 'question' => $request->question,
                 'level_id' => $request->level_id,
+                'category_id' => $request->category_id,
                 'resource_id' => $request->resource_id,
                 'type_id' => $request->type_id,
             ]);
@@ -72,6 +73,9 @@ class QuestionController extends Controller
             }
             if($request->has('resource_id')){
                 $question->resource_id = $request->resource_id; 
+            }
+            if($request->has('category_id')){
+                $question->category_id = $request->category_id; 
             }
             if($request->has('type_id')){
                 $question->type_id = $request->type_id; 

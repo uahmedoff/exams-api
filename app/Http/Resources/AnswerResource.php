@@ -12,6 +12,7 @@ class AnswerResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'answer' => $this->answer,
+            'type_id' => $this->type_id,
             'question_id' => $this->question_id,
             'is_correct' => $this->is_correct,
             'is_active' => $this->is_active,

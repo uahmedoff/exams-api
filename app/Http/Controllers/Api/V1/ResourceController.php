@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\User;
+use App\Models\Level;
 use App\Services\File;
+use App\Models\Question;
 use App\Models\Resource;
+use App\Models\QuestionPlan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ResourceRequest;
 use App\Http\Resources\ResourceResource;
-use App\Models\Level;
-use App\Models\QuestionPlan;
 
 class ResourceController extends Controller
 {
@@ -41,11 +42,17 @@ class ResourceController extends Controller
                 'level_id' => $request->level_id
             ]);
             if($request->has('qp_id')){
-                QuestionPlan::find($request->qp_id)
-                    ->update([
+                $qp = QuestionPlan::find($request->qp_id);    
+                $qp->update([
+                    'resource_id' => $resource->id
+                ]);
+                if($qp->question_id){
+                    $q = Question::find($qp->question_id)->update([
                         'resource_id' => $resource->id
                     ]);
+                }
             }
+            
             return new ResourceResource($resource);
         }
         return response()->json(['message'=>'You have no permission'],403);
@@ -76,6 +83,17 @@ class ResourceController extends Controller
             if($request->has('level_id')){
                 $resource->level_id = $request->level_id; 
             }
+            // if($request->has('qp_id')){
+            //     $qp = QuestionPlan::find($request->qp_id);    
+            //     $qp->update([
+            //         'resource_id' => $resource->id
+            //     ]);
+            //     if($qp->question_id){
+            //         $q = Question::find($qp->question_id)->update([
+            //             'resource_id' => $resource->id
+            //         ]);
+            //     }
+            // }
             $resource->save();
 
             return new ResourceResource($resource);
