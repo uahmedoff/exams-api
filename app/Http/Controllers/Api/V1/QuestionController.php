@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Question;
 use App\Models\QuestionPlan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\QuestionRequest;
 use Illuminate\Support\Facades\Storage;
@@ -22,12 +23,14 @@ class QuestionController extends Controller
     }
 
     public function index(Request $request){
+        // DB::connection()->enableQueryLog();
         $questions = $this->question->notDeleted();
         $questions = $questions->filter();
         $questions = ($request->order == 'rand') ? $questions->inRandomOrder() : $questions->sort();
         if($request->has('limit')){
             $limit = $request->limit;
             $questions = $questions->limit($limit)->with('qresource')->get();
+            // return DB::getQueryLog(); 
             return QuestionWithResourceResource::collection($questions);
         }
         else{
