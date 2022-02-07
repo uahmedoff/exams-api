@@ -40,9 +40,9 @@ class ResultController extends Controller
         }
         elseif(count($request->question_typed_correct_answers)){
             $qtca = $request->question_typed_correct_answers;
-            // return $qtca;
             for($i=0;$i<count($qtca);$i++){
                 if(array_key_exists($i,$qtca) && $qtca[$i]){
+                    // return $qtca[$i];
                     $qu = Question::where('id',$i)->with(['answers','type'])->first();
                     $is_correct = false;
                     foreach($qu->answers as $answer){

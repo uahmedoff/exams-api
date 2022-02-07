@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 class ExamDetailsController extends Controller
 {
     public function upload_student_voice(Request $request,$student_id,$exam_id,$question_id){
-        // return $request->all();
         $student = Student::find($student_id);
         $imagePath = $request->file('audio')->store('student/'.$student->name.'_'.$student->surname.'_'.$student->id, 'public');
         Result::create([
