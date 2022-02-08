@@ -19,4 +19,9 @@ class ExamDetailsController extends Controller
         ]);
         return response()->json([],200);
     }
+
+    public function clear_results($exam_id){
+        Result::where('exam_id',$exam_id)->delete();
+        return response()->json([],204);
+    }
 }

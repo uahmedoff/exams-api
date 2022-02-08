@@ -37,6 +37,9 @@ Route::group(['prefix'=>'v1','namespace' => '\App\Http\Controllers\Api\V1'],func
         Route::apiResource('answer','AnswerController');
         Route::group(['prefix' => 'exam'],function(){
         });
+        Route::group(['prefix' => 'exam'],function(){
+            Route::delete('{exam_id}/results','ExamDetailsController@clear_results');
+        });
         Route::apiResource('exam','ExamController');
         Route::apiResource('result','ResultController');
         Route::group(['prefix' => 'question-plan'],function(){
