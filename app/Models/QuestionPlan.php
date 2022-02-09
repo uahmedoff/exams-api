@@ -17,6 +17,7 @@ class QuestionPlan extends Model
         'question_id',
         'level_id',
         'question_type_id',
+        'folder_id',
         'is_active'
     ];
 

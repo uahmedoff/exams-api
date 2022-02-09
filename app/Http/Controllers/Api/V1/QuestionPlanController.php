@@ -22,6 +22,7 @@ class QuestionPlanController extends Controller
         $question_plans = $this->question_plan->where([
                 'level_id' => $request->level_id,
                 'question_type_id' => $request->question_type_id,
+                'folder_id' => $request->folder_id
             ])
             ->notDeleted()
             ->with('question.answers')
@@ -34,6 +35,7 @@ class QuestionPlanController extends Controller
             $question_plan = $this->question_plan->create([
                 'level_id' => $request->level_id,
                 'question_type_id' => $request->question_type_id,
+                'folder_id' => $request->folder_id
             ]);
             return new QuestionPlanResource($question_plan);
         }

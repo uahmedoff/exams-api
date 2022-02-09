@@ -52,8 +52,18 @@ class Question extends Model
         if ($filter = request('is_active')){
             $query = $query->where('is_active', $filter);
         }
-
         return $query;
+    }
+
+    public function scopeNotDeleted($query){
+        return $query->where('is_active',true)
+            ->whereHas('question_plan',function($q){
+                $q->where('is_active',true);
+            });
+    }
+
+    public function question_plan(){
+        return $this->hasOne(QuestionPlan::class);
     }
 
     public function type(){

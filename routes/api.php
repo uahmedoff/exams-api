@@ -52,5 +52,6 @@ Route::group(['prefix'=>'v1','namespace' => '\App\Http\Controllers\Api\V1'],func
             Route::get('phone/{phone}','StudentController@get_student_by_phone');
             Route::post('{student_id}/exam/{exam_id}/question/{question_id}/upload','ExamDetailsController@upload_student_voice');
         });
+        Route::apiResource('folder','FolderController');
     });
 });
