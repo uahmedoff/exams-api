@@ -34,27 +34,36 @@ class File{
         if(count($folders)){
             $folder1 = "";
             if(isset($folders['folder1'])){
-                $level_id = $folders['folder1'];
-                $level = Level::find($level_id);
-                $folder1 = str_replace(" ","_",$level->name);
+                if(is_numeric($folders['folder1'])){
+                    $level_id = $folders['folder1'];
+                    $level = Level::find($level_id);
+                    $folder1 = str_replace(" ","_",$level->name);
+                }
+                else{
+                    $folder1 = $folders['folder1'];
+                }
             }
-
             if(isset($folders['folder2'])){
-                $file_type = $folders['folder2'];
-                $resource = ResourceType::find($file_type);
-                $folder2 = $resource->name."s";            
-                if(
-                    ($folder2 == 'videos' && $extension != 'mp4') || 
-                    ($folder2 == 'audios' && $extension != 'mp3') || 
-                    ($folder2 == 'images' && ($extension != 'jpg' && $extension != 'png'))
-                ){
-                    abort(403,"Incorrect type chosen");
+                if(is_numeric($folders['folder2'])){
+                    $file_type = $folders['folder2'];
+                    $resource = ResourceType::find($file_type);
+                    $folder2 = $resource->name."s";            
+                    if(
+                        ($folder2 == 'videos' && $extension != 'mp4') || 
+                        ($folder2 == 'audios' && $extension != 'mp3') || 
+                        ($folder2 == 'images' && ($extension != 'jpg' && $extension != 'png'))
+                    ){
+                        abort(403,"Incorrect type chosen");
+                    }
+                }
+                else{
+                    $folder2 = $folders['folder2'];
                 }
             }
             $folder = $folder1 . "/" . $folder2;
         }
         
-        $filePath = "/".$folder."/".$fileName;
+        $filePath = $folder."/".$fileName;
 		Storage::put('/public/'.$filePath,$decoded);
 		// file_put_contents(storage_path().$filePath, $decoded);
 		return $filePath;
