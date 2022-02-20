@@ -16,7 +16,8 @@ class ExamRequest extends FormRequest
         return [
             'student_id' => 'required|integer',
             'level_name' => 'required',
-            'group' => 'required'
+            'group' => 'required',
+            'group_id' => 'required|integer'
         ];
     }
 }

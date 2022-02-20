@@ -36,9 +36,9 @@ Route::group(['prefix'=>'v1','namespace' => '\App\Http\Controllers\Api\V1'],func
         Route::apiResource('question','QuestionController');
         Route::apiResource('answer','AnswerController');
         Route::group(['prefix' => 'exam'],function(){
-        });
-        Route::group(['prefix' => 'exam'],function(){
             Route::delete('{exam_id}/results','ExamDetailsController@clear_results');
+            Route::post('{exam_id}/set-finished','ExamDetailsController@set_exam_finished');
+            Route::get('groups','ExamDetailsController@exams_by_groups');
         });
         Route::apiResource('exam','ExamController');
         Route::apiResource('result','ResultController');
@@ -53,5 +53,11 @@ Route::group(['prefix'=>'v1','namespace' => '\App\Http\Controllers\Api\V1'],func
             Route::post('{student_id}/exam/{exam_id}/question/{question_id}/upload','ExamDetailsController@upload_student_voice');
         });
         Route::apiResource('folder','FolderController');
+        Route::group(['prefix' => 'examgroup'],function(){
+            Route::get('new-ones','ExamgroupController@get_new_examgroups');
+            Route::put('{examgroup_id}/add','ExamgroupController@add_to_checking_list');
+            Route::get('checking-ones','ExamgroupController@get_checking_examgroups');
+            Route::get('{examgroup_id}/exams','ExamgroupController@get_exams_by_examgroup');
+        });
     });
 });

@@ -29,7 +29,12 @@ class QuestionController extends Controller
         $questions = ($request->order == 'rand') ? $questions->inRandomOrder() : $questions->sort();
         if($request->has('limit')){
             $limit = $request->limit;
-            $questions = $questions->limit($limit)->with('qresource')->get();
+            $questions = $questions->limit($limit)->with([
+                'qresource',
+                'answers' => function($q){
+                    $q->inRandomOrder();
+                }
+            ])->get();
             // return DB::getQueryLog(); 
             return QuestionWithResourceResource::collection($questions);
         }

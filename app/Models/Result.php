@@ -17,6 +17,9 @@ class Result extends Model
         'file',
         'answer',
         'score',
+        'question_type_id',
+        'comment',
+        'invigilator_file'
     ];
 
     public function exam(){

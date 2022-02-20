@@ -21,7 +21,7 @@ class GroupHelper{
             $teacher = $group->teachers[0]->name;
         }
         $time = substr($group->time, 0, -3);
-        return "#".$group->id . " " . $days . " ". $time ." " . $teacher;
+        return $days . " ". $time ." " . $teacher;
     }
 
     public function getStudentExamLevel($level_name,$week_num){

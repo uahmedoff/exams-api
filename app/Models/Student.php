@@ -14,6 +14,7 @@ class Student extends Model
         'surname',
         'phone',
         'date_of_birth',
+        'group_id',
         'group',
         'current_level'
     ];

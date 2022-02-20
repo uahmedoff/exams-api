@@ -10,6 +10,7 @@ use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ResultRequest;
+use App\Http\Resources\ResultResource;
 
 class ResultController extends Controller
 {
@@ -18,8 +19,7 @@ class ResultController extends Controller
         //
     }
 
-    public function store(ResultRequest $request)
-    {   
+    public function store(ResultRequest $request){   
         if($request->image){
             $exam = Exam::find($request->exam_id);
             $fileName = File::uploadFromBase64($request->image,[
@@ -86,14 +86,18 @@ class ResultController extends Controller
         return response()->json(['message'=>'saved'],200);
     }
 
-    public function show($id)
-    {
-        //
+    public function show($id){
+        $result = Result::findOrFail($id);
+        return new ResultResource($result);
     }
 
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id){
+        $result = Result::findOrFail($id);
+        $result->update([
+            'comment' => $request->comment,
+            'score' => $request->score
+        ]);
+        return new ResultResource($result);
     }
 
     public function destroy($id)
