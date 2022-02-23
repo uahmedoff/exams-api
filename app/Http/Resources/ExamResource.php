@@ -15,6 +15,7 @@ class ExamResource extends JsonResource
             'level_id' => $this->level_id,
             'examgroup_id' => $this->examgroup_id,
             'group' => $this->group,
+            'student' => new StudentResource($this->student),
             'results' => ResultResource::collection($this->results)
         ];
     }

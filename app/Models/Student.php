@@ -16,6 +16,7 @@ class Student extends Model
         'date_of_birth',
         'group_id',
         'group',
+        'branch_name',
         'current_level'
     ];
 

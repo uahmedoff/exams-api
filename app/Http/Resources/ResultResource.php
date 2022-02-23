@@ -19,7 +19,9 @@ class ResultResource extends JsonResource{
             'answer' => $this->answer,
             'score' => $this->score,
             'comment' => $this->comment,
-            'invigilator_file' => $this->invigilator_file
+            'invigilator_file' => $this->invigilator_file,
+            'question' => new QuestionForResultResource($this->question),
+            'qanswer' => new AnswerForResultResource($this->qanswer)
         ];
     }
 }

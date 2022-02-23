@@ -45,14 +45,36 @@ class ExamgroupController extends Controller{
         return response()->json(['message'=>'You have no permission'],403);  
     } 
 
-    public function get_exams_by_examgroup($examgroup_id){
-        if(auth()->user()->role == User::ROLE_INVIGILATOR){
+    public function get_exams_by_examgroup($examgroup_id, Request $request){
+        if(
+            auth()->user()->role == User::ROLE_ADMIN || 
+            auth()->user()->role == User::ROLE_INVIGILATOR 
+        ){
             $exams = Exam::where('examgroup_id',$examgroup_id)
-                ->with(['results' => function($q){
-                    $q->whereNotNull('file');
+                ->with(['results' => function($q) use ($request) {
+                    if($request->has('onlyWithFile') && $request->onlyWithFile == 'true'){
+                        $q->whereNotNull('file');
+                    }
                 }])->get();
             return ExamResource::collection($exams);
         }
         return response()->json(['message'=>'You have no permission'],403);  
+    }
+
+    public function get_all_checking_exam_groups($from,$till){
+        $to = $till . " 23:59:59";
+        if(auth()->user()->role == User::ROLE_ADMIN){
+            $examgroups = Examgroup::where('status',ExamGroup::STATUS_FINISHED)
+                ->whereNotNull('invigilator_id')
+                ->whereBetween('created_at',[$from, $to])
+                ->latest()
+                ->paginate($this->per_page);
+            return ExamgroupResource::collection($examgroups);
+        }
+        return response()->json(['message'=>'You have no permission'],403);  
+    }
+
+    public function show(Examgroup $examgroup){
+        return new ExamgroupResource($examgroup);
     }
 }

@@ -26,6 +26,8 @@ class ExamController extends Controller
                 'level_id' => $level->id,
             ]
         );
+        $examgroup->group_name = $request->group;
+        $examgroup->branch_name = $request->branch_name;
         $examgroup->number_of_students += 1;
         $examgroup->deadline = Carbon::now()->addMinutes(80)->addHours(12);
         $examgroup->save();

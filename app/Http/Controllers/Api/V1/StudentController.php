@@ -41,6 +41,7 @@ class StudentController extends Controller{
                         'date_of_birth' => $body->date_of_birth,
                         'group' => $group_helper->groupName($group),
                         'group_id' => $group->id,
+                        'branch_name' => $group->branch->name,
                         'current_level' => $group_helper->getStudentExamLevel($group->level->name,$week_num)
                     ]
                 );

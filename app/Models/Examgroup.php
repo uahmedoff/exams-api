@@ -19,6 +19,16 @@ class Examgroup extends Model{
         'deadline',
         'number_of_students',
         'invigilator_id',
-        'status'
+        'status',
+        'group_name',
+        'branch_name',
     ];
+
+    public function level(){
+        return $this->belongsTo(Level::class);
+    }
+
+    public function invigilator(){
+        return $this->belongsTo(User::class,'invigilator_id');
+    }
 }

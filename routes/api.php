@@ -55,9 +55,11 @@ Route::group(['prefix'=>'v1','namespace' => '\App\Http\Controllers\Api\V1'],func
         Route::apiResource('folder','FolderController');
         Route::group(['prefix' => 'examgroup'],function(){
             Route::get('new-ones','ExamgroupController@get_new_examgroups');
-            Route::put('{examgroup_id}/add','ExamgroupController@add_to_checking_list');
             Route::get('checking-ones','ExamgroupController@get_checking_examgroups');
+            Route::get('{examgroup}','ExamgroupController@show');
+            Route::put('{examgroup_id}/add','ExamgroupController@add_to_checking_list');
             Route::get('{examgroup_id}/exams','ExamgroupController@get_exams_by_examgroup');
+            Route::get('checking-exams/{from}/{till}','ExamgroupController@get_all_checking_exam_groups');
         });
     });
 });

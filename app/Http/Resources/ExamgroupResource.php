@@ -12,11 +12,14 @@ class ExamgroupResource extends JsonResource{
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'group_id' => $this->group_id,
+            'group_name' => $this->group_name,
             'level_id' => $this->level_id,
             'deadline' => $this->deadline,
             'number_of_students' => $this->number_of_students,
             'invigilator_id' => $this->invigilator_id,
-            'status' => $this->status
+            'status' => $this->status,
+            'level' => new LevelResource($this->level),
+            'invigilator' => new UserResource($this->invigilator),
         ];
     }
 }
