@@ -18,7 +18,7 @@ class GroupHelper{
         }
         $teacher = "";
         if(count($group->teachers)){
-            $nickname = ($group->teachers[0]->nickname) ? " (" . $group->teachers[0]->nickname : ")";
+            $nickname = ($group->teachers[0]->nickname) ? " (" . $group->teachers[0]->nickname .") " : "";
             $teacher = $group->teachers[0]->name . $nickname;
         }
         $time = substr($group->time, 0, -3);
