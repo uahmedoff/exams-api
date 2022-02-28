@@ -10,6 +10,7 @@ class ResourceForResultResource extends JsonResource{
         return [
             'id' => $this->id,
             'src' => $this->src,
+            'type_id' => $this->type_id,
             'type' => new ResourceTypeResource($this->type),
             'text' => $this->text,
             'is_active' => $this->is_active,
