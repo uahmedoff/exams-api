@@ -52,9 +52,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost/'),
+    'url' => env('APP_URL'),
 
-    'cb_url' => env('CB_URL', 'http://cambridgeonline/'),
+    'cb_url' => env('CB_URL'),
     
     'asset_url' => env('ASSET_URL', null),
 
