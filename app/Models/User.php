@@ -16,13 +16,15 @@ class User extends Authenticatable implements JWTSubject
     const ROLE_ADMIN = 1;
     const ROLE_INVIGILATOR = 2;
     const ROLE_ASSESSER = 3;
+    const ROLE_SUPERVISOR = 4;
 
     protected $fillable = [
         'name',
         'phone',
         'crm_token',
         'password',
-        'role'
+        'role',
+        'staff_id'
     ];
 
     protected $hidden = [

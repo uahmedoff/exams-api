@@ -68,6 +68,9 @@ class AuthController extends Controller
             }
             elseif($role == 'Assesser'){
                 $r = User::ROLE_ASSESSER;
+            }
+            elseif($role == 'Assistant'){
+                $r = User::ROLE_SUPERVISOR;
             }   
         }
         if(!$r)
@@ -79,7 +82,8 @@ class AuthController extends Controller
             [
                 'name' => $b->user->staff->name,
                 'crm_token' => $b->access_token,
-                'role' => $r
+                'role' => $r,
+                'staff_id' => $b->user->staff->id
             ]
         );
         $token = auth()->login($user);

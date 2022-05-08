@@ -101,4 +101,17 @@ class Question extends Model
             ORDER BY q.level_id, "q"."type_id"	ASC';
         return DB::select($query);
     }
+
+    public function generate($params){
+        return self::whereHas('level',function($q)use($params){
+            $q->where('name',$params['level']);
+        })
+        ->whereHas('type',function($q)use($params){
+            $q->where('name',$params['type']);
+        })
+        ->notDeleted()
+        ->inRandomOrder()
+        ->limit($params['limit'])
+        ->get();
+    }
 }

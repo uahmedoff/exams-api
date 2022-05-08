@@ -61,5 +61,13 @@ Route::group(['prefix'=>'v1','namespace' => '\App\Http\Controllers\Api\V1'],func
             Route::get('{examgroup_id}/exams','ExamgroupController@get_exams_by_examgroup');
             Route::get('checking-exams/{from}/{till}','ExamgroupController@get_all_checking_exam_groups');
         });
+        Route::group(['prefix'=>'generate-questions'],function(){
+            Route::get('groups','GeneratedQuestionsController@groups');
+            Route::post('supervisor_group/{supervisor_group_id}/generate','GeneratedQuestionsController@generate');
+            Route::get('supervisor_group/{supervisor_group_id}','GeneratedQuestionsController@get_supervisor_group');
+            Route::get('supervisor_group/{supervisor_group_id}/students','GeneratedQuestionsController@get_supervisor_group_students');
+            Route::get('group_student/{group_student_id}','GeneratedQuestionsController@get_supervisor_group_student');
+            Route::get('group_student/{group_student_id}/questions','GeneratedQuestionsController@get_generated_question_for_student');
+        });
     });
 });
