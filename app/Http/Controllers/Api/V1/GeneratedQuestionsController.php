@@ -13,13 +13,17 @@ use GuzzleHttp\Exception\ClientException;
 
 class GeneratedQuestionsController extends Controller{
     
-    public function groups(){
+    public function groups(Request $request){
         if(auth()->user()->role != User::ROLE_SUPERVISOR)
             return response()->json(['message'=>'You have no permission'],403);  
 
+        $request->validate([
+            'date' => 'required'
+        ]);
+
         $supervisor_groups = SupervisorGroup::where([
             'created_by' => auth()->user()->id,
-            'exam_date' => date("Y-m-d")
+            'exam_date' => $request->date
         ])
         ->withCount(['generated_questions'])
         ->get();
@@ -28,7 +32,7 @@ class GeneratedQuestionsController extends Controller{
         
         try{
             $client = new \GuzzleHttp\Client(['base_uri' => config('app.cb_url')."/api/"]);
-            $res = $client->request('GET',"supervisor/".auth()->user()->staff_id."/exam-groups/".date('Y-m-d'), [
+            $res = $client->request('GET',"supervisor/".auth()->user()->staff_id."/exam-groups/".$request->date, [
                 'headers' => [
                     'Referer' => config('app.cb_url'),
                     "Accept" => 'Application/json',
@@ -37,21 +41,28 @@ class GeneratedQuestionsController extends Controller{
             ]);
             $body = json_decode($res->getBody()); // 200
             foreach($body->data as $group){
-                $supervisor_group = SupervisorGroup::create([
-                    'group' => $group->group,
+                $exam_exists = SupervisorGroup::where('group->id',$group->group->id)
+                ->where([
                     'level' => $group->level,
                     'exam_date' => $group->exam_date
-                ]);
-                foreach($group->students as $student){
-                    GroupStudent::create([
-                        'supervisor_group_id' => $supervisor_group->id,
-                        'student' => $student->name
+                ])->count();
+                if(!$exam_exists){
+                    $supervisor_group = SupervisorGroup::create([
+                        'group' => $group->group,
+                        'level' => $group->level,
+                        'exam_date' => $group->exam_date
                     ]);
+                    foreach($group->students as $student){
+                        GroupStudent::create([
+                            'supervisor_group_id' => $supervisor_group->id,
+                            'student' => $student->name
+                        ]);
+                    }
                 }
             }
             return SupervisorGroup::where([
                     'created_by' => auth()->user()->id,
-                    'exam_date' => date("Y-m-d")
+                    'exam_date' => $request->date
                 ])
                 ->withCount(['generated_questions'])
                 ->get();
@@ -212,7 +223,9 @@ class GeneratedQuestionsController extends Controller{
     }
 
     public function get_supervisor_group($supervisor_group_id){
-        return SupervisorGroup::find($supervisor_group_id);
+        return SupervisorGroup::where('id',$supervisor_group_id)
+            ->with(['generated_questions.question.qresource','generated_questions.question.answers',])
+            ->first();
     }
     
     public function get_supervisor_group_students($supervisor_group_id){
