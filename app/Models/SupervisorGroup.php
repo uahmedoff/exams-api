@@ -16,7 +16,9 @@ class SupervisorGroup extends Model{
     protected $fillable = [
         'group',
         'level',
-        'exam_date'
+        'exam_date',
+        'supervisor_id',
+        'branch_id',
     ];
 
     protected $casts = [

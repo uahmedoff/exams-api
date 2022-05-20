@@ -13,6 +13,64 @@ use GuzzleHttp\Exception\ClientException;
 
 class GeneratedQuestionsController extends Controller{
     
+    public function examgroups($branch_id,$exam_date){
+        if(auth()->user()->role != User::ROLE_ASSESSER)
+            return response()->json(['message'=>'You have no permission'],403);  
+
+        $supervisor_groups = SupervisorGroup::where([
+            'exam_date' => $exam_date,
+            'branch_id' => $branch_id
+        ])
+        ->withCount(['generated_questions'])
+        ->get();
+        if(count($supervisor_groups))
+            return $supervisor_groups;
+        
+        try{
+            $client = new \GuzzleHttp\Client(['base_uri' => config('app.cb_url')."/api/"]);
+            $res = $client->request('GET',"supervisor/exam-groups/branch/".$branch_id."/exam-date/".$exam_date, [
+                'headers' => [
+                    'Referer' => config('app.cb_url'),
+                    "Accept" => 'Application/json',
+                    "Authorization" => 'bearer ' . auth()->user()->crm_token,
+                ]
+            ]);
+            $body = json_decode($res->getBody()); // 200
+            foreach($body->data as $group){
+                $exam_exists = SupervisorGroup::where('group->id',$group->group->id)
+                ->where([
+                    'level' => $group->level,
+                    'exam_date' => $group->exam_date,
+                    'branch_id' => $branch_id
+                ])->count();
+                if(!$exam_exists){
+                    $supervisor_group = SupervisorGroup::create([
+                        'group' => $group->group,
+                        'level' => $group->level,
+                        'exam_date' => $group->exam_date,
+                        'supervisor_id' => $group->supervisor_id,
+                        'branch_id' => $branch_id
+                    ]);
+                    foreach($group->students as $student){
+                        GroupStudent::create([
+                            'supervisor_group_id' => $supervisor_group->id,
+                            'student' => $student->name
+                        ]);
+                    }
+                }
+            }
+            return SupervisorGroup::where([
+                    'exam_date' => $exam_date,
+                    'branch_id' => $branch_id
+                ])
+                ->withCount(['generated_questions'])
+                ->get();
+        }
+        catch (ClientException $e) {
+            // return response()->json(['error' => 'Unauthorized'], 401);
+        }
+    }
+
     public function groups(Request $request){
         if(auth()->user()->role != User::ROLE_SUPERVISOR)
             return response()->json(['message'=>'You have no permission'],403);  
