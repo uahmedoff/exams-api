@@ -276,6 +276,18 @@ class GeneratedQuestionsController extends Controller{
                 }
                 break;
             }
+            // Pesentation (speaking)
+            $presentation_questions = $question->generate([
+                'level' => $level,
+                'type' => 'speaking',
+                'limit' => 1
+            ]);
+            foreach($presentation_questions as $question){
+                GeneratedQuestion::create([
+                    'group_student_id' => $student->id,
+                    'question_id' => $question->id
+                ]);
+            }
         }
         return response()->json(['message'=>'Questions are successfully generated'],200);
     }
