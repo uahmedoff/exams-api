@@ -80,7 +80,7 @@ class GeneratedQuestionsController extends Controller{
         ]);
 
         $supervisor_groups = SupervisorGroup::where([
-            'created_by' => auth()->user()->id,
+            'supervisor_id' => auth()->user()->staff_id,
             'exam_date' => $request->date
         ])
         ->withCount(['generated_questions'])
