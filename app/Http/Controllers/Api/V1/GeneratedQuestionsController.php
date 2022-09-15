@@ -308,9 +308,12 @@ class GeneratedQuestionsController extends Controller{
 
     public function get_generated_question_for_student($group_student_id){
         return GeneratedQuestion::where('group_student_id',$group_student_id)
-            ->with(['question.qresource','question.answers' => function($q){
-                $q->inRandomOrder();
-            }])
+            ->with(['question.qresource',
+                // 'question.answers' => function($q){
+                //     $q->inRandomOrder();
+                // }
+                'question.answers'
+            ])
             ->get();
     }
 }
