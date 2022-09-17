@@ -69,6 +69,7 @@ Route::group(['prefix'=>'v1','namespace' => '\App\Http\Controllers\Api\V1'],func
             Route::get('supervisor_group/{supervisor_group_id}/students','GeneratedQuestionsController@get_supervisor_group_students');
             Route::get('group_student/{group_student_id}','GeneratedQuestionsController@get_supervisor_group_student');
             Route::get('group_student/{group_student_id}/questions','GeneratedQuestionsController@get_generated_question_for_student');
+            Route::get('group_student/{group_student_id}/supervisor-group','GeneratedQuestionsController@get_generated_question_supervisor_group');
         });
     });
 });

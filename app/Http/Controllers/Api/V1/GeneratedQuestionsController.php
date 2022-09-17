@@ -316,4 +316,10 @@ class GeneratedQuestionsController extends Controller{
             ])
             ->get();
     }
+
+    public function get_generated_question_supervisor_group($group_student_id){
+        return SupervisorGroup::whereHas('generated_questions',function($q)use($group_student_id){
+            $q->where('group_student_id',$group_student_id);
+        })->first();
+    }
 }
