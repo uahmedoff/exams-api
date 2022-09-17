@@ -311,7 +311,8 @@ class GeneratedQuestionsController extends Controller{
             ->with(['question.qresource',
                 // 'question.answers' => function($q){
                 //     $q->inRandomOrder();
-                // }
+                // },
+                'question.question_plan.qresource',
                 'question.answers'
             ])
             ->get();
